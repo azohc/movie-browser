@@ -11,17 +11,17 @@ const { currentPage, lastPage, maxNextPrevSteps } = defineProps([
 
 const emitPageSelected = defineEmits([EVENT__PAGE_SELECTED]);
 
-const pages = [...Array(lastPage).keys()];
+const pages = [...Array(lastPage).keys()].map((p) => p + 1);
 
-const previousPages = ref(pages.filter((p) => p < currentPage));
-const nextPages = ref(pages.filter((p) => p > currentPage));
+const previousPages = ref(pages.filter((p) => p < currentPage + 1));
+const nextPages = ref(pages.filter((p) => p > currentPage + 1));
 
-console.log("INIT:", previousPages, currentPage, nextPages);
+console.log("INIT:", previousPages.value, currentPage, nextPages.value);
 
 const selectPage = (page) => {
   console.log("nextPage is ", page);
-  previousPages.value = pages.filter((p) => p < page);
-  nextPages.value = pages.filter((p) => p > page);
+  previousPages.value = pages.filter((p) => p < page + 1);
+  nextPages.value = pages.filter((p) => p > page + 1);
   emitPageSelected(EVENT__PAGE_SELECTED, page);
   console.log(previousPages.value, currentPage, nextPages.value);
 };
@@ -38,14 +38,14 @@ const selectPage = (page) => {
       class="round-button"
       v-for="prevPage in previousPages"
       @click="() => selectPage(prevPage - 1)"
-      >{{ prevPage + 1 }}</span
+      >{{ prevPage }}</span
     >
     <span class="round-button page-active">{{ currentPage + 1 }}</span>
     <span
       class="round-button"
       v-for="nextPage of nextPages"
-      @click="() => selectPage(nextPage + currentPage)"
-      >{{ nextPage + 1 }}</span
+      @click="() => selectPage(nextPage + currentPage - 1)"
+      >{{ nextPage }}</span
     >
     <PrevNextButton
       :isPrev="false"
