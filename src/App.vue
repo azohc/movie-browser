@@ -53,6 +53,7 @@ const handlePaginationChange = (selectedPage) => {
   <Paginator
     :currentPage="currentPage"
     :lastPage="lastPage"
+    :maxNextPrevSteps="2"
     @pageSelected="handlePaginationChange"
   />
   <ul>
