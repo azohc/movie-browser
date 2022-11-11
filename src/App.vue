@@ -23,14 +23,18 @@ bonus level: Apply nice styling to this UI!
 
 import { COLORS } from "./commons";
 import Paginator from "./components/Paginator.vue";
+import Sandbox from "./components/test/Sandbox.vue";
 import { ref, computed } from "vue";
 import movies from "./assets/movies.json";
 
-const PAGE_SIZES = [5, 10, 20];
-const pageSize = ref(PAGE_SIZES[0]);
+const pageSize = ref(5);
 const currentPage = ref(0);
 const lastPage = computed(() => Math.ceil(movies.length / pageSize.value));
+
 const handlePageSizeChange = () => {
+  console.log(
+    `pagesizechange: curr=${currentPage.value} last=${lastPage.value}`
+  );
   if (currentPage.value + 1 > lastPage.value) {
     currentPage.value = lastPage.value - 1;
   }
@@ -44,7 +48,7 @@ const handlePaginationChange = (selectedPage) => {
   <span> showing {{ pageSize }} out of {{ movies.length }} movies</span>
   <div>
     <select @change="handlePageSizeChange" v-model="pageSize">
-      <option v-for="ps in PAGE_SIZES" :value="ps">
+      <option v-for="ps in [5, 10]" :value="ps">
         {{ ps }}
       </option>
     </select>
@@ -65,6 +69,8 @@ const handlePaginationChange = (selectedPage) => {
       {{ movie.title }}
     </li>
   </ul>
+
+  <Sandbox></Sandbox>
 </template>
 
 <style scoped>

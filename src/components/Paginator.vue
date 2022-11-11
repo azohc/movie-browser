@@ -1,6 +1,6 @@
 <script setup>
 import { EVENT__PAGE_SELECTED, COLORS } from "../commons";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import PrevNextButton from "./PrevNextButton.vue";
 import Button from "./Button.vue";
 
@@ -12,16 +12,22 @@ const { currentPage, lastPage, maxNextPrevSteps } = defineProps([
 
 const emitPageSelected = defineEmits([EVENT__PAGE_SELECTED]);
 
-const pages = [...Array(lastPage).keys()].map((p) => p + 1);
-
-const previousPages = ref(
-  pages.filter((p) => p < currentPage + 1).slice(-maxNextPrevSteps)
+const previousPages = computed(() =>
+  [...Array(lastPage).keys()]
+    .map((p) => p + 1)
+    .filter((p) => p < currentPage + 1)
+    .slice(-maxNextPrevSteps)
 );
-const nextPages = ref(
-  pages.filter((p) => p > currentPage + 1).slice(0, maxNextPrevSteps)
+const nextPages = computed(() =>
+  [...Array(lastPage).keys()]
+    .map((p) => p + 1)
+    .filter((p) => p > currentPage + 1)
+    .slice(0, maxNextPrevSteps)
 );
 
+console.log("render pagi with lastpage=", lastPage);
 const selectPage = (page) => {
+  const pages = [...Array(lastPage).keys()].map((p) => p + 1);
   previousPages.value = pages
     .filter((p) => p < page + 1)
     .slice(-maxNextPrevSteps);
@@ -33,6 +39,11 @@ const selectPage = (page) => {
 </script>
 
 <template>
+  <div class="debug">
+    last page is {{ lastPage }}
+    <br />
+    pages array is {{ [...Array(lastPage).keys()].map((p) => p + 1) }}
+  </div>
   <div class="page-scroller">
     <PrevNextButton
       :isPrev="true"
@@ -67,7 +78,6 @@ const selectPage = (page) => {
       >...
     </Button>
     <Button
-      :classes="['default-cursor']"
       v-if="currentPage + maxNextPrevSteps + 1 < lastPage"
       :onClick="() => selectPage(lastPage - 1)"
       >{{ lastPage }}
