@@ -1,9 +1,9 @@
 <script setup>
-const { isPrev, onClick, showSvg } = defineProps(['isPrev', 'onClick', 'isOn']);
+const { isPrev, onClick, showSvg } = defineProps(["isPrev", "onClick", "isOn"]);
 </script>
 
 <template>
-  <div
+  <button
     class="round-button-noborder"
     :disabled="!isOn"
     :style="{ cursor: isOn ? 'pointer' : 'unset' }"
@@ -21,7 +21,7 @@ const { isPrev, onClick, showSvg } = defineProps(['isPrev', 'onClick', 'isOn']);
         ></path>
       </g>
     </svg>
-  </div>
+  </button>
 </template>
 
 <style scoped>
@@ -35,10 +35,11 @@ const { isPrev, onClick, showSvg } = defineProps(['isPrev', 'onClick', 'isOn']);
   width: 20px;
   border-radius: 20px;
   border: none;
+  box-sizing: content-box;
+  background-color: white;
 }
 
 svg {
-  padding-top: 3px;
   stroke: black;
   stroke-width: 3;
   overflow: visible;

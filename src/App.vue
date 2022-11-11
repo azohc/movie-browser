@@ -21,9 +21,9 @@ level 5: I'd like to know at all times what is the average score of ALL the movi
 bonus level: Apply nice styling to this UI!
 */
 
-import Paginator from './components/Paginator.vue';
-import { ref, computed } from 'vue';
-import movies from './assets/movies.json';
+import Paginator from "./components/Paginator.vue";
+import { ref, computed } from "vue";
+import movies from "./assets/movies.json";
 
 const PAGE_SIZES = [5, 10, 20];
 const pageSize = ref(PAGE_SIZES[0]);
@@ -36,7 +36,7 @@ const handlePageSizeChange = () => {
   }
 };
 const handlePaginationChange = (selectedPage) => {
-  console.log('handlePgChange', selectedPage);
+  currentPage.value = selectedPage;
 };
 </script>
 

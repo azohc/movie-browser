@@ -1,34 +1,39 @@
 <script setup>
-import PrevNextButton from './PrevNextButton.vue';
+import { EVENT__PAGE_SELECTED } from "../commons";
+import PrevNextButton from "./PrevNextButton.vue";
 
-const { currentPage, lastPage } = defineProps(['currentPage', 'lastPage']);
+const { currentPage, lastPage } = defineProps(["currentPage", "lastPage"]);
 
-const emitPageSelected = defineEmits('pageSelected');
+const emitPageSelected = defineEmits([EVENT__PAGE_SELECTED]);
+
+const handlePageSelect = (page) => {
+  emitPageSelected(EVENT__PAGE_SELECTED, page);
+};
 </script>
 
 <template>
   <div class="page-scroller">
     <PrevNextButton
       :isPrev="true"
-      :onClick="() => emitPageSelected('pageSelected', --currentPage)"
+      :onClick="() => handlePageSelect(currentPage - 1)"
       :isOn="currentPage > 0"
     />
     <span
       class="round-button"
       v-for="prevPageNr in currentPage"
-      @click="currentPage = prevPageNr - 1"
+      @click="() => handlePageSelect(prevPageNr - 1)"
       >{{ prevPageNr }}</span
     >
     <span class="round-button page-active">{{ currentPage + 1 }}</span>
     <span
       class="round-button"
       v-for="nextPageNr in lastPage - currentPage - 1"
-      @click="currentPage = nextPageNr + currentPage"
+      @click="() => handlePageSelect(nextPageNr + currentPage)"
       >{{ nextPageNr + currentPage + 1 }}</span
     >
     <PrevNextButton
       :isPrev="false"
-      :onClick="() => currentPage++"
+      :onClick="() => handlePageSelect(currentPage + 1)"
       :isOn="currentPage + 1 < lastPage"
     />
   </div>
