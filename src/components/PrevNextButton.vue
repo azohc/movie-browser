@@ -1,4 +1,6 @@
 <script setup>
+import { COLORS } from "../commons";
+
 const { isPrev, onClick, showSvg } = defineProps(["isPrev", "onClick", "isOn"]);
 </script>
 
@@ -36,11 +38,11 @@ const { isPrev, onClick, showSvg } = defineProps(["isPrev", "onClick", "isOn"]);
   border-radius: 20px;
   border: none;
   box-sizing: content-box;
-  background-color: white;
+  background-color: v-bind(COLORS.light);
 }
 
 svg {
-  stroke: black;
+  stroke: v-bind(COLORS.dark);
   stroke-width: 3;
   overflow: visible;
 }

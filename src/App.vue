@@ -21,6 +21,7 @@ level 5: I'd like to know at all times what is the average score of ALL the movi
 bonus level: Apply nice styling to this UI!
 */
 
+import { COLORS } from "./commons";
 import Paginator from "./components/Paginator.vue";
 import { ref, computed } from "vue";
 import movies from "./assets/movies.json";
@@ -67,6 +68,10 @@ const handlePaginationChange = (selectedPage) => {
 </template>
 
 <style scoped>
+* {
+  background: v-bind(COLORS.light);
+  color: v-bind(COLORS.dark);
+}
 .page-scroller {
   display: flex;
 }

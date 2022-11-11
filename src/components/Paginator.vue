@@ -1,5 +1,5 @@
 <script setup>
-import { EVENT__PAGE_SELECTED } from "../commons";
+import { EVENT__PAGE_SELECTED, COLORS } from "../commons";
 import PrevNextButton from "./PrevNextButton.vue";
 
 const { currentPage, lastPage } = defineProps(["currentPage", "lastPage"]);
@@ -50,11 +50,11 @@ const handlePageSelect = (page) => {
   height: 20px;
   width: 20px;
   border-radius: 20px;
-  border: 1px black solid;
+  border: 1px v-bind(COLORS.dark) solid;
 }
 
 .page-active {
-  background-color: black;
-  color: white;
+  background-color: v-bind(COLORS.dark);
+  color: v-bind(COLORS.light);
 }
 </style>
