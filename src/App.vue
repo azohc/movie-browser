@@ -29,10 +29,9 @@ import movies from "./assets/movies.json";
 const PAGE_SIZES = [5, 10, 20];
 const pageSize = ref(PAGE_SIZES[0]);
 const currentPage = ref(0);
-const currentPageUI = computed(() => currentPage.value + 1);
 const lastPage = computed(() => Math.ceil(movies.length / pageSize.value));
 const handlePageSizeChange = () => {
-  if (currentPageUI.value > lastPage.value) {
+  if (currentPage.value + 1 > lastPage.value) {
     currentPage.value = lastPage.value - 1;
   }
 };

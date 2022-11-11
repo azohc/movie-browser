@@ -13,17 +13,21 @@ const emitPageSelected = defineEmits([EVENT__PAGE_SELECTED]);
 
 const pages = [...Array(lastPage).keys()].map((p) => p + 1);
 
-const previousPages = ref(pages.filter((p) => p < currentPage + 1));
-const nextPages = ref(pages.filter((p) => p > currentPage + 1));
-
-console.log("INIT:", previousPages.value, currentPage, nextPages.value);
+const previousPages = ref(
+  pages.filter((p) => p < currentPage + 1).slice(-maxNextPrevSteps)
+);
+const nextPages = ref(
+  pages.filter((p) => p > currentPage + 1).slice(0, maxNextPrevSteps)
+);
 
 const selectPage = (page) => {
-  console.log("nextPage is ", page);
-  previousPages.value = pages.filter((p) => p < page + 1);
-  nextPages.value = pages.filter((p) => p > page + 1);
+  previousPages.value = pages
+    .filter((p) => p < page + 1)
+    .slice(-maxNextPrevSteps);
+  nextPages.value = pages
+    .filter((p) => p > page + 1)
+    .slice(0, maxNextPrevSteps);
   emitPageSelected(EVENT__PAGE_SELECTED, page);
-  console.log(previousPages.value, currentPage, nextPages.value);
 };
 </script>
 
@@ -34,6 +38,17 @@ const selectPage = (page) => {
       :onClick="() => selectPage(currentPage - 1)"
       :isOn="currentPage > 0"
     />
+    <span
+      class="round-button default-cursor"
+      v-if="currentPage - maxNextPrevSteps > 0"
+      @click="() => selectPage(0)"
+      >1</span
+    >
+    <span
+      class="round-button default-cursor no-border"
+      v-if="currentPage - maxNextPrevSteps > 1"
+      >...</span
+    >
     <span
       class="round-button"
       v-for="prevPage in previousPages"
@@ -46,6 +61,17 @@ const selectPage = (page) => {
       v-for="nextPage of nextPages"
       @click="() => selectPage(nextPage - 1)"
       >{{ nextPage }}</span
+    >
+    <span
+      class="round-button default-cursor no-border"
+      v-if="currentPage + maxNextPrevSteps + 1 < lastPage - 1"
+      >...</span
+    >
+    <span
+      class="round-button default-cursor"
+      v-if="currentPage + maxNextPrevSteps + 1 < lastPage"
+      @click="() => selectPage(lastPage - 1)"
+      >{{ lastPage }}</span
     >
     <PrevNextButton
       :isPrev="false"
@@ -72,5 +98,13 @@ const selectPage = (page) => {
 .page-active {
   background-color: v-bind(COLORS.dark);
   color: v-bind(COLORS.light);
+}
+
+.default-cursor {
+  cursor: default;
+}
+
+.no-border {
+  border: none;
 }
 </style>
