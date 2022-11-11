@@ -44,7 +44,7 @@ const selectPage = (page) => {
     <span
       class="round-button"
       v-for="nextPage of nextPages"
-      @click="() => selectPage(nextPage + currentPage - 1)"
+      @click="() => selectPage(nextPage - 1)"
       >{{ nextPage }}</span
     >
     <PrevNextButton
