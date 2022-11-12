@@ -43,7 +43,7 @@ const handlePageChange = (newPage) => {
 
 <template>
   <h1 class="title">movie-browser</h1>
-  <Card class="movies-header">
+  <Card class="pagination-header">
     <h3 class="pagination-label">
       displaying {{ pageSize }} of the {{ movies.length }} movies found
     </h3>
@@ -117,7 +117,7 @@ const handlePageChange = (newPage) => {
   text-align: center;
   justify-content: center;
 }
-.movies-header {
+.pagination-header {
   width: 50vw;
   display: flex;
   margin-inline: auto;
@@ -126,7 +126,7 @@ const handlePageChange = (newPage) => {
   text-align: center;
 }
 
-.movies-header > * {
+.pagination-header > * {
   flex: 1;
 }
 
@@ -173,6 +173,9 @@ const handlePageChange = (newPage) => {
 }
 
 .movie-title {
+  text-transform: uppercase;
+  font-size: 2em;
+  text-align: center;
   margin-bottom: 10px;
 }
 .movie-subtitle {
