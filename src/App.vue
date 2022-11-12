@@ -25,6 +25,7 @@ import { COLORS } from "./commons";
 import Paginator from "./components/Paginator.vue";
 import { ref, computed } from "vue";
 import movies from "./assets/movies.json";
+import Card from "./components/Card.vue";
 
 const pageSize = ref(5);
 const currentPage = ref(0);
@@ -35,45 +36,55 @@ const handlePageSizeChange = () => {
     currentPage.value = lastPage.value - 1;
   }
 };
-const handlePaginationChange = (selectedPage) => {
-  currentPage.value = selectedPage;
+const handlePageChange = (newPage) => {
+  currentPage.value = newPage;
 };
 </script>
 
 <template>
-  <div class="header">
-    <h3>{{ movies.length }} movies</h3>
+  <h1 class="title">movie-browser</h1>
+  <Card class="movies-header">
+    <h3>displaying {{ pageSize }} of the {{ movies.length }} movies found</h3>
     <div class="page-size-input">
-      <label for="page-size-input">Results per page:</label>
+      <label for="page-size-input">results per page:</label>
       <input
+        @change="handlePageSizeChange"
         type="number"
         name="page-size-input"
         v-model="pageSize"
         min="1"
         :max="movies.length"
       />
-      <select v-model="pageSize">
+      <select @change="handlePageSizeChange" v-model="pageSize">
         <option v-for="ps in [5, 10, 20]">{{ ps }}</option>
       </select>
     </div>
-  </div>
-  <div class="movie-container">
-    <ul>
-      <li
-        v-for="movie in movies.slice(
-          currentPage * pageSize,
-          currentPage * pageSize + pageSize
-        )"
-      >
-        {{ movie.title }}
-      </li>
-    </ul>
-  </div>
+  </Card>
+  <ul class="movies-container">
+    <li
+      class="movie-card-container"
+      v-for="movie in movies.slice(
+        currentPage * pageSize,
+        currentPage * pageSize + pageSize
+      )"
+    >
+      <Card :hasShadow="true">
+        <h2 class="movie-title">
+          {{ movie.title }}
+        </h2>
+        <div class="movie-subtitle">
+          <h3 class="movie-subtitle-year">{{ movie.year }}</h3>
+          <h3 class="movie-subtitle-genre">{{ movie.genre }}</h3>
+          <h3>{{ movie.score }}⭐</h3>
+        </div>
+      </Card>
+    </li>
+  </ul>
   <Paginator
     :currentPage="currentPage"
     :lastPage="lastPage"
     :nrPrevNextPages="2"
-    @pageSelected="handlePaginationChange"
+    @pageSelected="handlePageChange"
   />
 </template>
 
@@ -83,7 +94,15 @@ const handlePaginationChange = (selectedPage) => {
   color: v-bind(COLORS.dark);
 }
 
-.header {
+.title {
+  font-size: 4em;
+  display: flex;
+  margin-inline: auto;
+  text-align: center;
+  justify-content: center;
+}
+.movies-header {
+  width: 50vw;
   display: flex;
   margin-inline: auto;
   justify-content: space-evenly;
@@ -92,14 +111,47 @@ const handlePaginationChange = (selectedPage) => {
 
 .page-size-input > * {
   margin-inline: 10px;
+  width: 48px;
 }
 .page-size-input > input {
   margin-inline: 0;
+  border-color: v-bind(COLORS.dark);
+  border-style: double;
   border-radius: 3px;
 }
 
 .page-size-input > select {
   padding: 1px;
+  border-color: v-bind(COLORS.dark);
+  border-width: 2px;
   border-radius: 3px;
+  border-style: double;
+}
+
+.movies-container {
+  width: 90vw;
+  display: flex;
+  flex-wrap: wrap;
+  margin-inline: auto;
+  list-style: none;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.movie-card-container {
+  margin: 20px;
+}
+
+.movie-title {
+  margin-bottom: 10px;
+}
+.movie-subtitle {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.movie-subtitle-genre {
+  padding-inline: 20px;
 }
 </style>
