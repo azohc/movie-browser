@@ -7,3 +7,8 @@ export const COLORS = {
   darkGray: "#354F52",
   dark: "#2F3E46",
 };
+
+export const range = (start, end) =>
+  Array(end - start)
+    .fill()
+    .map((_, i) => start + i);

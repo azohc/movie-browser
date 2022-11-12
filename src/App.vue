@@ -27,7 +27,7 @@ import Sandbox from "./components/test/Sandbox.vue";
 import { ref, computed } from "vue";
 import movies from "./assets/movies.json";
 
-const pageSize = ref(2);
+const pageSize = ref(5);
 const currentPage = ref(0);
 const lastPage = computed(() => Math.ceil(movies.length / pageSize.value));
 
@@ -57,6 +57,7 @@ const handlePaginationChange = (selectedPage) => {
   <Paginator
     :currentPage="currentPage"
     :lastPage="lastPage"
+    :nrPrevNextPages="2"
     @pageSelected="handlePaginationChange"
   />
   <ul>

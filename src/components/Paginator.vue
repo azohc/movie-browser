@@ -1,12 +1,15 @@
 <script setup>
-import { EVENT__PAGE_SELECTED, COLORS } from "../commons";
+import { EVENT__PAGE_SELECTED, COLORS, range } from "../commons";
 import PrevNextButton from "./PrevNextButton.vue";
 import Button from "./Button.vue";
 
-const { currentPage, lastPage } = defineProps(["currentPage", "lastPage"]);
+const { currentPage, lastPage, nrPrevNextPages } = defineProps([
+  "currentPage",
+  "lastPage",
+  "nrPrevNextPages",
+]);
 
 const emitPageSelected = defineEmits([EVENT__PAGE_SELECTED]);
-
 const selectPage = (page) => {
   emitPageSelected(EVENT__PAGE_SELECTED, page);
 };
@@ -19,38 +22,45 @@ const selectPage = (page) => {
       :onClick="() => selectPage(currentPage - 1)"
       :isOn="currentPage > 0"
     />
-    <!-- <Button
-      v-if="currentPage - maxNextPrevSteps > 0"
+    <Button
+      v-if="currentPage - nrPrevNextPages > 0"
       :onClick="() => selectPage(0)"
     >
       1
-    </Button> -->
-    <!-- <Button
-      :classes="['default-cursor', 'no-border']"
-      v-if="currentPage - maxNextPrevSteps > 1"
-      >...
-    </Button> -->
+    </Button>
     <Button
-      v-for="prevPage in currentPage"
-      :onClick="() => selectPage(prevPage - 1)"
-      >{{ prevPage }}
+      v-if="currentPage - nrPrevNextPages > 1"
+      :classes="['default-cursor', 'no-border']"
+      >...
+    </Button>
+    <Button
+      v-for="prevPage in range(
+        Math.max(0, currentPage - nrPrevNextPages),
+        currentPage
+      )"
+      :onClick="() => selectPage(prevPage)"
+      >{{ prevPage + 1 }}
     </Button>
     <Button :classes="['page-active']">{{ currentPage + 1 }}</Button>
     <Button
-      v-for="nextPage of lastPage - currentPage - 1"
-      :onClick="() => selectPage(nextPage + currentPage)"
-      >{{ nextPage + currentPage + 1 }}
+      v-for="nextPage in range(
+        currentPage + 1,
+        Math.min(lastPage, currentPage + nrPrevNextPages + 1)
+      )"
+      :onClick="() => selectPage(nextPage)"
+      >{{ nextPage + 1 }}
     </Button>
-    <!-- <Button
+    <Button
+      v-if="currentPage + nrPrevNextPages + 1 < lastPage - 1"
       :classes="['default-cursor', 'no-border']"
-      v-if="currentPage + maxNextPrevSteps + 1 < lastPage - 1"
       >...
     </Button>
     <Button
-      v-if="currentPage + maxNextPrevSteps + 1 < lastPage"
+      v-if="currentPage + nrPrevNextPages + 1 < lastPage"
       :onClick="() => selectPage(lastPage - 1)"
-      >{{ lastPage }}
-    </Button> -->
+    >
+      {{ lastPage }}
+    </Button>
     <PrevNextButton
       :isPrev="false"
       :onClick="() => selectPage(currentPage + 1)"
