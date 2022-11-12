@@ -1,10 +1,14 @@
 <script setup>
+import { computed } from "vue";
 import { COLORS } from "../commons";
 
 const { hasShadow, classes } = defineProps({
   hasShadow: { type: Boolean, required: false, default: false },
   classes: { type: Array, required: false },
 });
+const classList = computed(() =>
+  classes && classes.length ? classes.join(" ") : " "
+);
 </script>
 
 <template>

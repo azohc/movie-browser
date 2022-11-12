@@ -1,4 +1,5 @@
 export const EVENT__PAGE_SELECTED = "PageSelected";
+export const EVENT__PAGE_SIZE_CHANGED = "PageSizeChanged";
 
 export const COLORS = {
   light: "#CAD2C5",

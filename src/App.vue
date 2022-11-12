@@ -25,13 +25,15 @@ import { COLORS } from "./commons";
 import Paginator from "./components/Paginator.vue";
 import { ref, computed } from "vue";
 import movies from "./assets/movies.json";
-import Card from "./components/Card.vue";
+import MovieCard from "./components/MovieCard.vue";
+import FilterPaginatorCard from "./components/FilterPaginatorCard.vue";
 
 const pageSize = ref(5);
 const currentPage = ref(0);
 const lastPage = computed(() => Math.ceil(movies.length / pageSize.value));
 
-const handlePageSizeChange = () => {
+const handlePageSizeChange = (newPageSize) => {
+  pageSize.value = newPageSize;
   if (currentPage.value + 1 > lastPage.value) {
     currentPage.value = lastPage.value - 1;
   }
@@ -43,27 +45,17 @@ const handlePageChange = (newPage) => {
 
 <template>
   <h1 class="title">movie-browser</h1>
-  <Card class="pagination-header">
-    <h3 class="pagination-label">
-      displaying {{ pageSize }} of the {{ movies.length }} movies found
-    </h3>
-    <div class="page-size-input">
-      <label for="page-size-input">results per page:</label>
-      <input
-        @change="handlePageSizeChange"
-        type="number"
-        name="page-size-input"
-        v-model="pageSize"
-        min="1"
-        :max="movies.length"
-      />
-      <select @change="handlePageSizeChange" v-model="pageSize">
-        <option v-for="ps in [5, 10, 20]">
-          {{ ps }}
-        </option>
-      </select>
-    </div>
-  </Card>
+  <FilterPaginatorCard
+    :pageSize="pageSize"
+    :numMovies="movies.length"
+    @pageSizeChanged="handlePageSizeChange"
+  />
+  <Paginator
+    :currentPage="currentPage"
+    :lastPage="lastPage"
+    :nrPrevNextPages="2"
+    @pageSelected="handlePageChange"
+  />
   <ul class="movies-container">
     <li
       class="movie-card-container"
@@ -72,28 +64,7 @@ const handlePageChange = (newPage) => {
         currentPage * pageSize + pageSize
       )"
     >
-      <Card :hasShadow="true">
-        <h2 class="movie-title">
-          {{ movie.title }}
-        </h2>
-        <div class="movie-subtitle">
-          <h3 class="movie-subtitle-year">{{ movie.year }}</h3>
-          <h3 class="movie-subtitle-genre">{{ movie.genre }}</h3>
-          <h3>{{ movie.score }}⭐</h3>
-        </div>
-        <div class="img-container">
-          <img
-            v-if="movie.picture"
-            :src="movie.picture"
-            :alt="`Picture of ${movie.title}`"
-          />
-          <img
-            v-else
-            src="./assets/img_not_available.png"
-            :alt="`Picture of ${movie.title}`"
-          />
-        </div>
-      </Card>
+      <MovieCard :movie="movie" />
     </li>
   </ul>
   <Paginator
@@ -117,52 +88,12 @@ const handlePageChange = (newPage) => {
   text-align: center;
   justify-content: center;
 }
-.pagination-header {
-  width: 50vw;
-  display: flex;
-  margin-inline: auto;
-  justify-content: space-evenly;
-  align-items: baseline;
-  text-align: center;
-}
-
-.pagination-header > * {
-  flex: 1;
-}
-
-.page-size-input {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.page-size-input > * {
-  flex: 1;
-  margin-inline: 10px;
-  width: 48px;
-}
-
-.page-size-input > label {
-  flex: 3;
-}
-.page-size-input > input {
-  margin-inline: 0;
-  border-color: v-bind(COLORS.dark);
-  border-style: double;
-  border-radius: 3px;
-}
-
-.page-size-input > select {
-  padding: 1px;
-  border-color: v-bind(COLORS.dark);
-  border-width: 2px;
-  border-radius: 3px;
-  border-style: double;
-}
 
 .movies-container {
   width: 90vw;
   display: flex;
   flex-wrap: wrap;
+  margin: 0;
   margin-inline: auto;
   list-style: none;
   align-items: center;
@@ -170,32 +101,5 @@ const handlePageChange = (newPage) => {
 }
 .movie-card-container {
   margin: 20px;
-}
-
-.movie-title {
-  text-transform: uppercase;
-  font-size: 2em;
-  text-align: center;
-  margin-bottom: 10px;
-}
-.movie-subtitle {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: baseline;
-}
-
-.movie-subtitle-genre {
-  padding-inline: 20px;
-}
-
-.img-container {
-  display: flex;
-  max-width: 400px;
-  margin-inline: auto;
-}
-
-.img-container > img {
-  width: 100%;
 }
 </style>

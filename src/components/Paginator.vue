@@ -10,9 +10,7 @@ const { currentPage, lastPage, nrPrevNextPages } = defineProps([
 ]);
 
 const emitPageSelected = defineEmits([EVENT__PAGE_SELECTED]);
-const selectPage = (page) => {
-  emitPageSelected(EVENT__PAGE_SELECTED, page);
-};
+const selectPage = (page) => emitPageSelected(EVENT__PAGE_SELECTED, page);
 </script>
 
 <template>
@@ -81,6 +79,7 @@ const selectPage = (page) => {
 
 <style scoped>
 .pagi-container {
+  padding: 36px 0;
   margin-inline: auto;
   display: flex;
   justify-content: center;
