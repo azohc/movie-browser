@@ -33,7 +33,7 @@ const pageSizeChanged = (event) =>
 
 <style scoped>
 .pagination-header {
-  width: 60vw;
+  width: min(60vw, 500px);
   display: flex;
   flex-wrap: wrap;
   margin-inline: auto;

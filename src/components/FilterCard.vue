@@ -28,7 +28,7 @@ const searchQueryChanged = () =>
 <style scoped>
 .filter-card {
   margin: 10px 0;
-  width: 55vw;
+  width: min(55vw, 450px);
   display: flex;
   flex-wrap: wrap;
   margin-inline: auto;
