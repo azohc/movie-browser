@@ -41,6 +41,7 @@ const pageSizeChanged = (event) =>
 .pagination-header {
   width: 50vw;
   display: flex;
+  flex-wrap: wrap;
   margin-inline: auto;
   justify-content: space-evenly;
   align-items: baseline;

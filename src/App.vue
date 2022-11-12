@@ -26,7 +26,8 @@ import Paginator from "./components/Paginator.vue";
 import { ref, computed } from "vue";
 import movies from "./assets/movies.json";
 import MovieCard from "./components/MovieCard.vue";
-import FilterPaginatorCard from "./components/FilterPaginatorCard.vue";
+import FilterPaginatorCard from "./components/PaginationCard.vue";
+import Card from "./components/Card.vue";
 
 const pageSize = ref(5);
 const currentPage = ref(0);
