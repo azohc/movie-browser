@@ -13,7 +13,7 @@ const pageSizeChanged = (event) =>
   <Card :classes="['pagination-header']">
     <h2 class="pagination-label">{{ numMovies }} movies</h2>
     <div class="page-size-input">
-      <label for="page-size-input">movies per page:</label>
+      <label for="page-size-input">movies-per-page:</label>
       <input
         @change="pageSizeChanged"
         type="number"
@@ -33,7 +33,7 @@ const pageSizeChanged = (event) =>
 
 <style scoped>
 .pagination-header {
-  width: 50vw;
+  width: 60vw;
   display: flex;
   flex-wrap: wrap;
   margin-inline: auto;
@@ -42,12 +42,14 @@ const pageSizeChanged = (event) =>
   text-align: center;
 }
 
-.pagination-header > * {
+.pagination-label {
   flex: 1;
+  margin: 0;
 }
 
 .page-size-input {
   display: flex;
+  flex: 3;
   justify-content: center;
   align-items: center;
 }

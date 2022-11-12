@@ -13,7 +13,7 @@ const searchQueryChanged = () =>
 
 <template>
   <Card class="filter-card">
-    <label for="title-search">title search:</label>
+    <label for="title-search">title-search:</label>
     <input
       @keyup="searchQueryChanged"
       type="text"
@@ -27,8 +27,8 @@ const searchQueryChanged = () =>
 
 <style scoped>
 .filter-card {
-  margin: 36px 0;
-  width: 30vw;
+  margin: 10px 0;
+  width: 55vw;
   display: flex;
   flex-wrap: wrap;
   margin-inline: auto;
@@ -41,6 +41,8 @@ const searchQueryChanged = () =>
 }
 
 .filter-card > input {
+  width: inherit;
+  flex: 1;
   background-color: v-bind(COLORS.light);
   border-color: v-bind(COLORS.dark);
   border-style: double;

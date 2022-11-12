@@ -1,23 +1,4 @@
 <script setup>
-/*
-I have a new idea to download a huge database of movies and query it to find movies or to answer questions such as: what was the best action movie of the year 2015, or which year or years have the highest average score?
-
-Can you help me build it?
-
-Note: please do not update/change the file movies.json for this exercise!
-
-
-level 3: Add an input search field for the title of the movie. The list should update to show only movies with titles that match my search query. Please don't make it too restrictive, I would like for example that if I type 'wars', all 'Star Wars' movies should be matched.
-
-level 4: Add a multiselector for one or more years. The options should be all different years for which I have collected movies. Of course, the list should update to show only movies released in any of the chosen years.
-
-level 5: Add a multiselector for one or more genres. The options should be all different genres existing in the list of movies. Since I collected the movies from different sources, some genres are duplicated and don't really match, I expect you to fix this issue to show consistent options. Of course, the list should update to show only movies of any of the chosen genres.
-
-level 5: I'd like to know at all times what is the average score of ALL the movies that are listed (not considering the pagination), so please show it at the top of the list.
-
-bonus level: Apply nice styling to this UI!
-*/
-
 import { COLORS } from "./commons";
 import Paginator from "./components/Paginator.vue";
 import { ref, computed } from "vue";
@@ -82,7 +63,7 @@ const handlePageChange = (newPage) => {
     </li>
   </ul>
   <div class="zero-movies" v-else>
-    <h3>no movies found =[</h3>
+    <h3>zero movies found =[</h3>
     <p>you can try changing your search and/or filter though =]</p>
   </div>
   <Paginator
@@ -116,6 +97,7 @@ const handlePageChange = (newPage) => {
   display: flex;
   flex-wrap: wrap;
   margin: 0;
+  padding: 0;
   margin-inline: auto;
   list-style: none;
   align-items: center;
