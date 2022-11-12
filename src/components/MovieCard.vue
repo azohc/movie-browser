@@ -15,7 +15,10 @@ const { movie } = defineProps({
       <h3 class="movie-subtitle-genre">{{ movie.genre }}</h3>
       <h3>{{ movie.score }}⭐</h3>
     </div>
-    <div class="img-container">
+    <div
+      class="img-container"
+      :style="{ maxWidth: `${movie.picture ? 400 : 300}px` }"
+    >
       <img
         v-if="movie.picture"
         :src="movie.picture"
@@ -50,7 +53,6 @@ const { movie } = defineProps({
 
 .img-container {
   display: flex;
-  max-width: 400px;
   margin-inline: auto;
 }
 

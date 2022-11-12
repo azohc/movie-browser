@@ -15,11 +15,9 @@ const pageSizeChanged = (event) =>
 
 <template>
   <Card :classes="['pagination-header']">
-    <h3 class="pagination-label">
-      displaying {{ pageSize }} of the {{ numMovies }} movies found
-    </h3>
+    <h2 class="pagination-label">{{ numMovies }} movies</h2>
     <div class="page-size-input">
-      <label for="page-size-input">results per page:</label>
+      <label for="page-size-input">movies per page:</label>
       <input
         @change="pageSizeChanged"
         type="number"

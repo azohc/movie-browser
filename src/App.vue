@@ -6,9 +6,6 @@ Can you help me build it?
 
 Note: please do not update/change the file movies.json for this exercise!
 
-level 1: Let's have a list showing the movies in the movies.json file. Show all relevant information such as title, genre, score, etc. However, I'm collecting a lot of movies, so please paginate the list to show X movies at a time only, and add an input field where I can set this value of X. Of course, the list should update to the correct length at all times.
-
-level 2: Add first page, previous page, next page and last page buttons to the list. Make sure they are only active when relevant! Also, I would like to know the current page I'm looking at, and the total number of pages available.
 
 level 3: Add an input search field for the title of the movie. The list should update to show only movies with titles that match my search query. Please don't make it too restrictive, I would like for example that if I type 'wars', all 'Star Wars' movies should be matched.
 
@@ -31,12 +28,29 @@ import Card from "./components/Card.vue";
 
 const pageSize = ref(5);
 const currentPage = ref(0);
-const lastPage = computed(() => Math.ceil(movies.length / pageSize.value));
+const titleSearchQuery = ref("");
+const lastPage = computed(() =>
+  Math.ceil(filteredMovies.value.length / pageSize.value)
+);
+const filteredMovies = computed(() =>
+  movies.filter((m) =>
+    titleSearchQuery !== ""
+      ? m.title
+          .toLowerCase()
+          .includes(titleSearchQuery.value.trim().toLowerCase())
+      : true
+  )
+);
+const handleSearchTextChange = () => {
+  if (currentPage.value + 1 > lastPage.value) {
+    currentPage.value = Math.max(lastPage.value - 1, 0);
+  }
+};
 
 const handlePageSizeChange = (newPageSize) => {
   pageSize.value = newPageSize;
   if (currentPage.value + 1 > lastPage.value) {
-    currentPage.value = lastPage.value - 1;
+    currentPage.value = Math.max(lastPage.value - 1, 0);
   }
 };
 const handlePageChange = (newPage) => {
@@ -48,19 +62,24 @@ const handlePageChange = (newPage) => {
   <h1 class="title">movie-browser</h1>
   <FilterPaginatorCard
     :pageSize="pageSize"
-    :numMovies="movies.length"
+    :numMovies="filteredMovies.length"
     @pageSizeChanged="handlePageSizeChange"
   />
-  <Paginator
-    :currentPage="currentPage"
-    :lastPage="lastPage"
-    :nrPrevNextPages="2"
-    @pageSelected="handlePageChange"
-  />
-  <ul class="movies-container">
+  <Card class="filter-card">
+    <label for="title-search">title search:</label>
+    <input
+      @keyup="handleSearchTextChange"
+      type="text"
+      name="title-search"
+      id="title-search"
+      v-model="titleSearchQuery"
+      placeholder="search for movies"
+    />
+  </Card>
+  <ul v-if="filteredMovies.length" class="movies-container">
     <li
       class="movie-card-container"
-      v-for="movie in movies.slice(
+      v-for="movie in filteredMovies.slice(
         currentPage * pageSize,
         currentPage * pageSize + pageSize
       )"
@@ -68,6 +87,10 @@ const handlePageChange = (newPage) => {
       <MovieCard :movie="movie" />
     </li>
   </ul>
+  <div class="zero-movies" v-else>
+    <h3>no movies found =[</h3>
+    <p>you can try changing your search and/or filter though =]</p>
+  </div>
   <Paginator
     :currentPage="currentPage"
     :lastPage="lastPage"
@@ -90,6 +113,29 @@ const handlePageChange = (newPage) => {
   justify-content: center;
 }
 
+.zero-movies {
+  text-align: center;
+}
+
+.filter-card {
+  margin: 36px 0;
+  width: 30vw;
+  display: flex;
+  flex-wrap: wrap;
+  margin-inline: auto;
+  justify-content: center;
+  align-items: baseline;
+  text-align: center;
+}
+.filter-card > label {
+  padding-inline: 20px;
+}
+
+.filter-card > input {
+  border-color: v-bind(COLORS.dark);
+  border-style: double;
+  border-radius: 3px;
+}
 .movies-container {
   width: 90vw;
   display: flex;

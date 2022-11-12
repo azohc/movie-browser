@@ -15,6 +15,7 @@ const classList = computed(() =>
 
 <style scoped>
 .round-button {
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -24,6 +25,6 @@ const classList = computed(() =>
   height: 20px;
   width: 20px;
   border-radius: 20px;
-  border: 1px v-bind(COLORS.dark) solid;
+  border: 2px v-bind(COLORS.dark) solid;
 }
 </style>
