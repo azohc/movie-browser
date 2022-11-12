@@ -10,21 +10,21 @@ const { currentPage, lastPage, nrPrevNextPages } = defineProps([
 ]);
 
 const emitPageSelected = defineEmits([EVENT__PAGE_SELECTED]);
-const selectPage = (page) => emitPageSelected(EVENT__PAGE_SELECTED, page);
+const pageSelected = (page) => emitPageSelected(EVENT__PAGE_SELECTED, page);
 </script>
 
 <template>
   <div class="pagi-container">
     <PrevNextButton
       :isPrev="true"
-      :onClick="() => selectPage(currentPage - 1)"
+      :onClick="() => pageSelected(currentPage - 1)"
       :isOn="currentPage > 0"
     />
     <div class="pages-container">
       <template v-if="lastPage !== 0">
         <Button
           v-if="currentPage - nrPrevNextPages > 0"
-          :onClick="() => selectPage(0)"
+          :onClick="() => pageSelected(0)"
         >
           1
         </Button>
@@ -38,7 +38,7 @@ const selectPage = (page) => emitPageSelected(EVENT__PAGE_SELECTED, page);
             Math.max(0, currentPage - nrPrevNextPages),
             currentPage
           )"
-          :onClick="() => selectPage(prevPage)"
+          :onClick="() => pageSelected(prevPage)"
           >{{ prevPage + 1 }}
         </Button>
       </template>
@@ -49,7 +49,7 @@ const selectPage = (page) => emitPageSelected(EVENT__PAGE_SELECTED, page);
             currentPage + 1,
             Math.min(lastPage, currentPage + nrPrevNextPages + 1)
           )"
-          :onClick="() => selectPage(nextPage)"
+          :onClick="() => pageSelected(nextPage)"
           >{{ nextPage + 1 }}
         </Button>
         <Button
@@ -59,7 +59,7 @@ const selectPage = (page) => emitPageSelected(EVENT__PAGE_SELECTED, page);
         </Button>
         <Button
           v-if="currentPage + nrPrevNextPages + 1 < lastPage"
-          :onClick="() => selectPage(lastPage - 1)"
+          :onClick="() => pageSelected(lastPage - 1)"
         >
           {{ lastPage }}
         </Button>
@@ -67,7 +67,7 @@ const selectPage = (page) => emitPageSelected(EVENT__PAGE_SELECTED, page);
     </div>
     <PrevNextButton
       :isPrev="false"
-      :onClick="() => selectPage(currentPage + 1)"
+      :onClick="() => pageSelected(currentPage + 1)"
       :isOn="currentPage + 1 < lastPage"
     />
   </div>

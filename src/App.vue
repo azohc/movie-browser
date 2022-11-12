@@ -24,7 +24,7 @@ import { ref, computed } from "vue";
 import movies from "./assets/movies.json";
 import MovieCard from "./components/MovieCard.vue";
 import FilterPaginatorCard from "./components/PaginationCard.vue";
-import Card from "./components/Card.vue";
+import FilterCard from "./components/FilterCard.vue";
 
 const pageSize = ref(5);
 const currentPage = ref(0);
@@ -41,7 +41,8 @@ const filteredMovies = computed(() =>
       : true
   )
 );
-const handleSearchTextChange = () => {
+const handleSearchTextChange = (newSearchQuery) => {
+  titleSearchQuery.value = newSearchQuery;
   if (currentPage.value + 1 > lastPage.value) {
     currentPage.value = Math.max(lastPage.value - 1, 0);
   }
@@ -63,19 +64,12 @@ const handlePageChange = (newPage) => {
   <FilterPaginatorCard
     :pageSize="pageSize"
     :numMovies="filteredMovies.length"
-    @pageSizeChanged="handlePageSizeChange"
+    @onPageSizeChanged="handlePageSizeChange"
   />
-  <Card class="filter-card">
-    <label for="title-search">title search:</label>
-    <input
-      @keyup="handleSearchTextChange"
-      type="text"
-      name="title-search"
-      id="title-search"
-      v-model="titleSearchQuery"
-      placeholder="search for movies"
-    />
-  </Card>
+  <FilterCard
+    :searchQuery="titleSearchQuery"
+    @searchQueryChanged="handleSearchTextChange"
+  />
   <ul v-if="filteredMovies.length" class="movies-container">
     <li
       class="movie-card-container"
@@ -95,7 +89,7 @@ const handlePageChange = (newPage) => {
     :currentPage="currentPage"
     :lastPage="lastPage"
     :nrPrevNextPages="2"
-    @pageSelected="handlePageChange"
+    @onPageSelected="handlePageChange"
   />
 </template>
 
@@ -117,25 +111,6 @@ const handlePageChange = (newPage) => {
   text-align: center;
 }
 
-.filter-card {
-  margin: 36px 0;
-  width: 30vw;
-  display: flex;
-  flex-wrap: wrap;
-  margin-inline: auto;
-  justify-content: center;
-  align-items: baseline;
-  text-align: center;
-}
-.filter-card > label {
-  padding-inline: 20px;
-}
-
-.filter-card > input {
-  border-color: v-bind(COLORS.dark);
-  border-style: double;
-  border-radius: 3px;
-}
 .movies-container {
   width: 90vw;
   display: flex;

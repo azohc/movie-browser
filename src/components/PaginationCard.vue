@@ -2,11 +2,7 @@
 import { COLORS, EVENT__PAGE_SIZE_CHANGED } from "../commons";
 import Card from "./Card.vue";
 
-const { pageSize, onPageSizeChange, numMovies } = defineProps([
-  "pageSize",
-  "onPageSizeChange",
-  "numMovies",
-]);
+const { pageSize, numMovies } = defineProps(["pageSize", "numMovies"]);
 
 const emitPageSizeChanged = defineEmits([EVENT__PAGE_SIZE_CHANGED]);
 const pageSizeChanged = (event) =>
