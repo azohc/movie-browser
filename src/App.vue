@@ -23,7 +23,6 @@ bonus level: Apply nice styling to this UI!
 
 import { COLORS } from "./commons";
 import Paginator from "./components/Paginator.vue";
-import Sandbox from "./components/test/Sandbox.vue";
 import { ref, computed } from "vue";
 import movies from "./assets/movies.json";
 
@@ -42,17 +41,33 @@ const handlePaginationChange = (selectedPage) => {
 </script>
 
 <template>
-  <span> showing {{ pageSize }} out of {{ movies.length }} movies</span>
-  <div>
-    <label for="page-size-input">Results per page:</label>
-    <input type="number" name="page-size-input" v-model="pageSize" />
+  <div class="header">
+    <h3>{{ movies.length }} movies</h3>
+    <div class="page-size-input">
+      <label for="page-size-input">Results per page:</label>
+      <input
+        type="number"
+        name="page-size-input"
+        v-model="pageSize"
+        min="1"
+        :max="movies.length"
+      />
+      <select v-model="pageSize">
+        <option v-for="ps in [5, 10, 20]">{{ ps }}</option>
+      </select>
+    </div>
   </div>
-  <div>
-    <select @change="handlePageSizeChange" v-model="pageSize">
-      <option v-for="ps in [5, 10]" :value="ps">
-        {{ ps }}
-      </option>
-    </select>
+  <div class="movie-container">
+    <ul>
+      <li
+        v-for="movie in movies.slice(
+          currentPage * pageSize,
+          currentPage * pageSize + pageSize
+        )"
+      >
+        {{ movie.title }}
+      </li>
+    </ul>
   </div>
   <Paginator
     :currentPage="currentPage"
@@ -60,18 +75,6 @@ const handlePaginationChange = (selectedPage) => {
     :nrPrevNextPages="2"
     @pageSelected="handlePaginationChange"
   />
-  <ul>
-    <li
-      v-for="movie in movies.slice(
-        currentPage * pageSize,
-        currentPage * pageSize + pageSize
-      )"
-    >
-      {{ movie.title }}
-    </li>
-  </ul>
-
-  <Sandbox></Sandbox>
 </template>
 
 <style scoped>
@@ -79,7 +82,24 @@ const handlePaginationChange = (selectedPage) => {
   background: v-bind(COLORS.light);
   color: v-bind(COLORS.dark);
 }
-.page-scroller {
+
+.header {
   display: flex;
+  margin-inline: auto;
+  justify-content: space-evenly;
+  align-items: baseline;
+}
+
+.page-size-input > * {
+  margin-inline: 10px;
+}
+.page-size-input > input {
+  margin-inline: 0;
+  border-radius: 3px;
+}
+
+.page-size-input > select {
+  padding: 1px;
+  border-radius: 3px;
 }
 </style>
