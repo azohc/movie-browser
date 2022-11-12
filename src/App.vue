@@ -44,7 +44,9 @@ const handlePageChange = (newPage) => {
 <template>
   <h1 class="title">movie-browser</h1>
   <Card class="movies-header">
-    <h3>displaying {{ pageSize }} of the {{ movies.length }} movies found</h3>
+    <h3 class="pagination-label">
+      displaying {{ pageSize }} of the {{ movies.length }} movies found
+    </h3>
     <div class="page-size-input">
       <label for="page-size-input">results per page:</label>
       <input
@@ -56,7 +58,9 @@ const handlePageChange = (newPage) => {
         :max="movies.length"
       />
       <select @change="handlePageSizeChange" v-model="pageSize">
-        <option v-for="ps in [5, 10, 20]">{{ ps }}</option>
+        <option v-for="ps in [5, 10, 20]">
+          {{ ps }}
+        </option>
       </select>
     </div>
   </Card>
@@ -76,6 +80,18 @@ const handlePageChange = (newPage) => {
           <h3 class="movie-subtitle-year">{{ movie.year }}</h3>
           <h3 class="movie-subtitle-genre">{{ movie.genre }}</h3>
           <h3>{{ movie.score }}⭐</h3>
+        </div>
+        <div class="img-container">
+          <img
+            v-if="movie.picture"
+            :src="movie.picture"
+            :alt="`Picture of ${movie.title}`"
+          />
+          <img
+            v-else
+            src="./assets/img_not_available.png"
+            :alt="`Picture of ${movie.title}`"
+          />
         </div>
       </Card>
     </li>
@@ -107,11 +123,26 @@ const handlePageChange = (newPage) => {
   margin-inline: auto;
   justify-content: space-evenly;
   align-items: baseline;
+  text-align: center;
 }
 
+.movies-header > * {
+  flex: 1;
+}
+
+.page-size-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .page-size-input > * {
+  flex: 1;
   margin-inline: 10px;
   width: 48px;
+}
+
+.page-size-input > label {
+  flex: 3;
 }
 .page-size-input > input {
   margin-inline: 0;
@@ -153,5 +184,15 @@ const handlePageChange = (newPage) => {
 
 .movie-subtitle-genre {
   padding-inline: 20px;
+}
+
+.img-container {
+  display: flex;
+  max-width: 400px;
+  margin-inline: auto;
+}
+
+.img-container > img {
+  width: 100%;
 }
 </style>
