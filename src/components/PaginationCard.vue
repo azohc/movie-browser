@@ -1,8 +1,13 @@
 <script setup>
+import { computed } from "vue";
 import { COLORS, EVENT__PAGE_SIZE_CHANGED } from "../commons";
 import Card from "./Card.vue";
 
-const { pageSize, numMovies } = defineProps(["pageSize", "numMovies"]);
+const { pageSize, numMovies, averageScore } = defineProps([
+  "pageSize",
+  "numMovies",
+  "averageScore",
+]);
 
 const emitPageSizeChanged = defineEmits([EVENT__PAGE_SIZE_CHANGED]);
 const pageSizeChanged = (event) =>
@@ -11,7 +16,13 @@ const pageSizeChanged = (event) =>
 
 <template>
   <Card :classes="['pagination-header']">
-    <h2 class="pagination-label">{{ numMovies }} movies</h2>
+    <h2 class="pagination-label">
+      {{ numMovies }} movie{{ numMovies > 1 ? "s" : "" }}
+    </h2>
+    <div class="column">
+      <h2 class="avg-score">{{ averageScore.toFixed(0) }}</h2>
+      <h3 class="avg-score-label">average-score</h3>
+    </div>
     <div class="page-size-input">
       <label for="page-size-input">movies-per-page:</label>
       <input
@@ -33,7 +44,7 @@ const pageSizeChanged = (event) =>
 
 <style scoped>
 .pagination-header {
-  width: min(60vw, 500px);
+  width: min(65vw, 550px);
   display: flex;
   flex-wrap: wrap;
   margin-inline: auto;
@@ -42,11 +53,19 @@ const pageSizeChanged = (event) =>
   text-align: center;
 }
 
-.pagination-label {
+.column {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pagination-label,
+.avg-score-label,
+.avg-score {
   flex: 1;
   margin: 0;
 }
-
 .page-size-input {
   display: flex;
   flex: 3;

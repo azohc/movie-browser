@@ -9,7 +9,7 @@ import Paginator from "./components/Paginator.vue";
 import { watch, ref, computed } from "vue";
 import MOVIES from "./assets/movies.json";
 import MovieCard from "./components/MovieCard.vue";
-import FilterPaginatorCard from "./components/PaginationCard.vue";
+import PaginatorCard from "./components/PaginationCard.vue";
 import FilterCard from "./components/FilterCard.vue";
 import Card from "./components/Card.vue";
 import PrevNextButton from "./components/PrevNextButton.vue";
@@ -53,6 +53,12 @@ const slicedMovies = computed(() =>
     (currentPage.value + 1) * pageSize.value
   )
 );
+const averageScore = computed(() => {
+  const sum = filteredMovies.value
+    .map((m) => m.score)
+    .reduce((a, b) => a + b, 0);
+  return sum / filteredMovies.value.length || 0;
+});
 
 // Filters
 const filterByTitle = (movie) => {
@@ -69,7 +75,7 @@ const filterByGenre = (movie) =>
   selectedGenres.value.includes(standardizeGenre(movie.genre));
 
 // Watchers
-watch([pageSize, selectedYears, selectedGenres, titleSearchQuery], () => {
+watch([pageSize, titleSearchQuery, selectedYears, selectedGenres], () => {
   if (currentPage.value + 1 > lastPage.value) {
     currentPage.value = Math.max(lastPage.value - 1, 0);
   }
@@ -95,16 +101,12 @@ const handleGenreSelectionChange = (newSelection) => {
 
 <template>
   <h1 class="title">movie-browser</h1>
-  <FilterPaginatorCard
+  <PaginatorCard
     :pageSize="pageSize"
+    :averageScore="averageScore"
     :numMovies="filteredMovies.length"
     @pageSizeChanged="handlePageSizeChange"
   />
-  <FilterCard
-    :searchQuery="titleSearchQuery"
-    @searchQueryChanged="handleSearchTextChange"
-  />
-
   <Card class="select-filter-container">
     <OptionFilterCard
       style="padding-right: 20px; flex: 1"
@@ -124,6 +126,11 @@ const handleGenreSelectionChange = (newSelection) => {
       @genreSelectionChanged="handleGenreSelectionChange"
     ></OptionFilterCard>
   </Card>
+
+  <FilterCard
+    :searchQuery="titleSearchQuery"
+    @searchQueryChanged="handleSearchTextChange"
+  />
 
   <div class="movies-container">
     <PrevNextButton
