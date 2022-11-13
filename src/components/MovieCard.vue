@@ -1,4 +1,5 @@
 <script setup>
+import { standardizeGenre } from "../commons";
 import Card from "./Card.vue";
 const { movie } = defineProps({
   movie: { required: true },
@@ -12,7 +13,7 @@ const { movie } = defineProps({
     </h2>
     <div class="movie-subtitle">
       <h3 class="movie-subtitle-year">{{ movie.year }}</h3>
-      <h3 class="movie-subtitle-genre">{{ movie.genre }}</h3>
+      <h3 class="movie-subtitle-genre">{{ standardizeGenre(movie.genre) }}</h3>
       <h3>{{ movie.score }}⭐</h3>
     </div>
     <div
@@ -35,7 +36,7 @@ const { movie } = defineProps({
 
 <style scoped>
 .movie-title {
-  text-transform: uppercase;
+  text-transform: lowercase;
   font-size: 2em;
   text-align: center;
   margin-bottom: 10px;

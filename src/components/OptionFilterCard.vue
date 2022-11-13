@@ -1,6 +1,5 @@
 <script setup>
 import { watch, ref } from "vue";
-import Card from "./Card.vue";
 
 const { title, options, event } = defineProps(["title", "options", "event"]);
 
@@ -11,7 +10,7 @@ watch(selected, () => emit(event, selected.value));
 </script>
 
 <template>
-  <Card>
+  <div class="container">
     <label :for="title"> {{ title }}: </label>
     <select
       @change="selectionChanged"
@@ -22,9 +21,14 @@ watch(selected, () => emit(event, selected.value));
     >
       <option v-for="opt in options">{{ opt }}</option>
     </select>
-  </Card>
+  </div>
 </template>
 
 <style scoped>
-/* todo */
+.container > label {
+  flex: 1;
+}
+.container > select {
+  flex: 1;
+}
 </style>
