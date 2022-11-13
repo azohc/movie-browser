@@ -1,58 +1,103 @@
 <script setup>
-import { COLORS } from "./commons";
+import {
+  COLORS,
+  EVENT__GENRE_SELECTION_CHANGED,
+  EVENT__YEAR_SELECTION_CHANGED,
+} from "./commons";
 import Paginator from "./components/Paginator.vue";
-import { ref, computed } from "vue";
+import { watch, ref, computed } from "vue";
 import MOVIES from "./assets/movies.json";
 import MovieCard from "./components/MovieCard.vue";
 import FilterPaginatorCard from "./components/PaginationCard.vue";
 import FilterCard from "./components/FilterCard.vue";
 import PrevNextButton from "./components/PrevNextButton.vue";
+import OptionFilterCard from "./components/OptionFilterCard.vue";
 
-const movies = MOVIES.map((m) =>
-  Object.assign({}, m, { score: Number(m.score) })
-);
+const stdizeMovieGenre = (movie) => {
+  const genre = movie.genre.toLowerCase();
+  // SCI-FI
+  if (genre.includes("sci") && genre.includes("fi")) return "sci-fi";
+  if (genre.includes("xmas")) return "x-mas";
+};
+
+const movies = MOVIES.map((m) => {
+  console.log("mg:", m.genre);
+
+  return Object.assign({}, m, {
+    score: Number(m.score),
+    year: Number(m.year),
+    genre: stdizeMovieGenre(m),
+  });
+});
 
 // Reactive vars
 const pageSize = ref(5);
 const currentPage = ref(0);
 const titleSearchQuery = ref("");
+const selectedYears = ref([]);
+const selectedGenres = ref([]);
 const lastPage = computed(() =>
   Math.ceil(filteredMovies.value.length / pageSize.value)
 );
-const filteredMovies = computed(() => movies.filter((m) => filterByTitle(m)));
+const filteredMovies = computed(() =>
+  movies.filter((m) => filterByTitle(m)).filter((m) => filterByYear(m))
+);
 const slicedMovies = computed(() =>
   filteredMovies.value.slice(
     currentPage.value * pageSize.value,
     (currentPage.value + 1) * pageSize.value
   )
 );
+const yearOptions = computed(() => {
+  let s = new Set(movies.map((m) => m.year));
+  let it = s.values();
+  return Array.from(it).sort();
+});
+
+const genreOptions = computed(() => {
+  return Array.from(
+    new Set(movies.map((m) => stdizeMovieGenre(m))).values()
+  ).sort();
+});
 
 // Filters
 const filterByTitle = (movie) => {
   if (titleSearchQuery.value.length < 2) return true;
-  const lowerCaseTitle = titleSearchQuery.value.toLowerCase();
-  return movie.title.toLowerCase().includes(lowerCaseTitle);
+  return movie.title
+    .toLowerCase()
+    .includes(titleSearchQuery.value.toLowerCase());
 };
+
+const filterByYear = (movie) =>
+  selectedYears.value.length === 0 || selectedYears.value.includes(movie.year);
+
+// Watchers
+watch([pageSize, selectedYears, titleSearchQuery], () => {
+  if (currentPage.value + 1 > lastPage.value) {
+    currentPage.value = Math.max(lastPage.value - 1, 0);
+  }
+});
 
 // Handlers
 const handleSearchTextChange = (newSearchQuery) => {
   titleSearchQuery.value = newSearchQuery;
-  if (currentPage.value + 1 > lastPage.value) {
-    currentPage.value = Math.max(lastPage.value - 1, 0);
-  }
 };
 const handlePageSizeChange = (newPageSize) => {
   pageSize.value = newPageSize;
-  if (currentPage.value + 1 > lastPage.value) {
-    currentPage.value = Math.max(lastPage.value - 1, 0);
-  }
 };
 const handlePageChange = (newPage) => {
   currentPage.value = newPage;
 };
+const handleYearSelectionChange = (newSelection) => {
+  selectedYears.value = newSelection.map((year) => Number(year));
+};
+const handleGenreSelectionChange = (newSelection) => {
+  selectedGenres.value = newSelection;
+};
 </script>
 
 <template>
+  {{ selectedYears }}
   <h1 class="title">movie-browser</h1>
   <FilterPaginatorCard
     :pageSize="pageSize"
@@ -63,6 +108,21 @@ const handlePageChange = (newPage) => {
     :searchQuery="titleSearchQuery"
     @searchQueryChanged="handleSearchTextChange"
   />
+
+  <OptionFilterCard
+    :title="'filter-by-year'"
+    :options="yearOptions"
+    :event="EVENT__YEAR_SELECTION_CHANGED"
+    @yearSelectionChanged="handleYearSelectionChange"
+  ></OptionFilterCard>
+
+  <OptionFilterCard
+    :title="'filter-by-genre'"
+    :options="genreOptions"
+    :event="EVENT__GENRE_SELECTION_CHANGED"
+    @genreSelectionChanged="handleGenreSelectionChange"
+  ></OptionFilterCard>
+
   <div class="movies-container">
     <PrevNextButton
       :isPrev="true"
@@ -96,10 +156,22 @@ const handlePageChange = (newPage) => {
   />
 </template>
 
-<style scoped>
+<style>
 * {
   background: v-bind(COLORS.light);
   color: v-bind(COLORS.dark);
+}
+
+input,
+select {
+  background-color: v-bind(COLORS.light);
+  border-color: v-bind(COLORS.dark);
+  border-style: double;
+  border-radius: 3px;
+}
+
+select {
+  border-width: 2px;
 }
 
 .title {
@@ -119,6 +191,7 @@ const handlePageChange = (newPage) => {
   justify-content: space-between;
   align-items: center;
 }
+
 .movie-cards {
   width: 90vw;
   display: flex;

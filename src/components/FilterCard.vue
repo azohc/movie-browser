@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { COLORS, EVENT__SEARCH_QUERY_CHANGED } from "../commons";
+import { EVENT__SEARCH_QUERY_CHANGED } from "../commons";
 import Card from "./Card.vue";
 
 const { searchQuery } = defineProps(["searchQuery"]);
@@ -20,7 +20,7 @@ const searchQueryChanged = () =>
       name="title-search"
       id="title-search"
       v-model="searchQueryRef"
-      placeholder="search for movies"
+      placeholder="search-for-movies"
     />
   </Card>
 </template>
@@ -43,9 +43,5 @@ const searchQueryChanged = () =>
 .filter-card > input {
   width: inherit;
   flex: 1;
-  background-color: v-bind(COLORS.light);
-  border-color: v-bind(COLORS.dark);
-  border-style: double;
-  border-radius: 3px;
 }
 </style>

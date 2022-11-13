@@ -1,6 +1,8 @@
-export const EVENT__PAGE_SELECTED = "PageSelected";
-export const EVENT__PAGE_SIZE_CHANGED = "PageSizeChanged";
-export const EVENT__SEARCH_QUERY_CHANGED = "SearchQueryChanged";
+export const EVENT__PAGE_SELECTED = "pageSelected";
+export const EVENT__PAGE_SIZE_CHANGED = "pageSizeChanged";
+export const EVENT__SEARCH_QUERY_CHANGED = "searchQueryChanged";
+export const EVENT__YEAR_SELECTION_CHANGED = "yearSelectionChanged";
+export const EVENT__GENRE_SELECTION_CHANGED = "genreSelectionChanged";
 
 export const COLORS = {
   light: "#CAD2C5",
