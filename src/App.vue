@@ -109,7 +109,6 @@ const handleGenreSelectionChange = (newSelection) => {
   />
   <Card class="select-filter-container">
     <OptionFilterCard
-      style="padding-right: 20px; flex: 1"
       class="year-filter"
       :title="'filter-by-year'"
       :options="yearOptions"
@@ -118,7 +117,6 @@ const handleGenreSelectionChange = (newSelection) => {
     ></OptionFilterCard>
 
     <OptionFilterCard
-      style="flex: 2"
       class="genre-filter"
       :title="'filter-by-genre'"
       :options="genreOptions"
@@ -232,6 +230,15 @@ select {
   width: 30vw;
   display: flex;
   justify-content: center;
+}
+
+.year-filter {
+  padding-right: 20px;
+  flex: 1;
+}
+
+.genre-filter {
+  flex: 2;
 }
 
 label {
