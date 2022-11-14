@@ -1,7 +1,11 @@
 <script setup>
 import { watch, ref } from "vue";
 
-const { title, options, event } = defineProps(["title", "options", "event"]);
+const { title, options, event } = defineProps([
+  "title",
+  "options",
+  "event",
+]);
 
 const emit = defineEmits([event]);
 
@@ -13,7 +17,6 @@ watch(selected, () => emit(event, selected.value));
   <div class="container">
     <label :for="title"> {{ title }}: </label>
     <select
-      @change="selectionChanged"
       class="styled-scrollbars"
       :name="title"
       multiple

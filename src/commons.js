@@ -1,8 +1,11 @@
 export const EVENT__PAGE_SELECTED = "pageSelected";
 export const EVENT__PAGE_SIZE_CHANGED = "pageSizeChanged";
-export const EVENT__SEARCH_QUERY_CHANGED = "searchQueryChanged";
-export const EVENT__YEAR_SELECTION_CHANGED = "yearSelectionChanged";
-export const EVENT__GENRE_SELECTION_CHANGED = "genreSelectionChanged";
+export const EVENT__SEARCH_QUERY_CHANGED =
+  "searchQueryChanged";
+export const EVENT__YEAR_SELECTION_CHANGED =
+  "yearSelectionChanged";
+export const EVENT__GENRE_SELECTION_CHANGED =
+  "genreSelectionChanged";
 
 export const COLORS = {
   light: "#CAD2C5",
@@ -19,7 +22,8 @@ export const range = (start, end) =>
 
 export const standardizeGenre = (genre) => {
   const lower = genre.toLowerCase();
-  if (lower.includes("sci") && lower.includes("fi")) return "sci-fi";
+  if (lower.includes("sci") && lower.includes("fi"))
+    return "sci-fi";
   if (lower.includes("xmas")) return "x-mas";
   if (lower.includes("action")) return "action";
   if (lower.includes("comedy")) return "comedy";

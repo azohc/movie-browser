@@ -19,6 +19,7 @@ const movies = MOVIES.map((m) => {
   return Object.assign({}, m, {
     score: Number(m.score),
     year: Number(m.year),
+    genre: standardizeGenre(m.genre),
   });
 });
 
@@ -37,9 +38,7 @@ const yearOptions = computed(() => {
   return Array.from(it).sort();
 });
 const genreOptions = computed(() => {
-  return Array.from(
-    new Set(movies.map((m) => standardizeGenre(m.genre))).values()
-  ).sort();
+  return Array.from(new Set(movies.map((m) => m.genre)).values()).sort();
 });
 const filteredMovies = computed(() =>
   movies
@@ -72,7 +71,7 @@ const filterByYear = (movie) =>
 
 const filterByGenre = (movie) =>
   selectedGenres.value.length === 0 ||
-  selectedGenres.value.includes(standardizeGenre(movie.genre));
+  selectedGenres.value.includes(movie.genre);
 
 // Watchers
 watch([pageSize, titleSearchQuery, selectedYears, selectedGenres], () => {
