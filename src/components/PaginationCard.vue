@@ -17,7 +17,7 @@ const pageSizeChanged = (event) =>
 <template>
   <Card :classes="['pagination-header']">
     <h2 class="pagination-label">
-      {{ numMovies }} movie{{ numMovies > 1 ? "s" : "" }}
+      {{ `${numMovies} movie${numMovies > 1 ? "s" : ""}` }}
     </h2>
     <div class="column">
       <h2 class="avg-score">{{ averageScore.toFixed(0) }}</h2>
