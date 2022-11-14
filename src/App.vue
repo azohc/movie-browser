@@ -10,7 +10,7 @@ import { watch, ref, computed } from "vue";
 import MOVIES from "./assets/movies.json";
 import MovieCard from "./components/MovieCard.vue";
 import PaginatorCard from "./components/PaginationCard.vue";
-import FilterCard from "./components/FilterCard.vue";
+import TitleSearchCard from "./components/TitleSearchCard.vue";
 import Card from "./components/Card.vue";
 import PrevNextButton from "./components/PrevNextButton.vue";
 import OptionFilterCard from "./components/OptionFilterCard.vue";
@@ -127,7 +127,7 @@ const handleGenreSelectionChange = (newSelection) => {
     ></OptionFilterCard>
   </Card>
 
-  <FilterCard
+  <TitleSearchCard
     :searchQuery="titleSearchQuery"
     @searchQueryChanged="handleSearchTextChange"
   />
