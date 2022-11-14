@@ -1,10 +1,5 @@
 <script setup>
-import {
-  COLORS,
-  EVENT__GENRE_SELECTION_CHANGED,
-  EVENT__YEAR_SELECTION_CHANGED,
-  standardizeGenre,
-} from "./commons";
+import { COLORS, standardizeGenre } from "./commons";
 import Paginator from "./components/Paginator.vue";
 import { watch, ref, computed } from "vue";
 import MOVIES from "./assets/movies.json";
@@ -38,7 +33,9 @@ const yearOptions = computed(() => {
   return Array.from(it).sort();
 });
 const genreOptions = computed(() => {
-  return Array.from(new Set(movies.map((m) => m.genre)).values()).sort();
+  return Array.from(
+    new Set(movies.map((m) => m.genre)).values()
+  ).sort();
 });
 const filteredMovies = computed(() =>
   movies
@@ -67,18 +64,22 @@ const filterByTitle = (movie) => {
     .includes(titleSearchQuery.value.toLowerCase());
 };
 const filterByYear = (movie) =>
-  selectedYears.value.length === 0 || selectedYears.value.includes(movie.year);
+  selectedYears.value.length === 0 ||
+  selectedYears.value.includes(movie.year);
 
 const filterByGenre = (movie) =>
   selectedGenres.value.length === 0 ||
   selectedGenres.value.includes(movie.genre);
 
 // Watchers
-watch([pageSize, titleSearchQuery, selectedYears, selectedGenres], () => {
-  if (currentPage.value + 1 > lastPage.value) {
-    currentPage.value = Math.max(lastPage.value - 1, 0);
+watch(
+  [pageSize, titleSearchQuery, selectedYears, selectedGenres],
+  () => {
+    if (currentPage.value + 1 > lastPage.value) {
+      currentPage.value = Math.max(lastPage.value - 1, 0);
+    }
   }
-});
+);
 
 // Handlers
 const handleSearchTextChange = (newSearchQuery) => {
@@ -111,16 +112,14 @@ const handleGenreSelectionChange = (newSelection) => {
       class="year-filter"
       :title="'filter-by-year'"
       :options="yearOptions"
-      :event="EVENT__YEAR_SELECTION_CHANGED"
-      @yearSelectionChanged="handleYearSelectionChange"
+      @selectionChanged="handleYearSelectionChange"
     ></OptionFilterCard>
 
     <OptionFilterCard
       class="genre-filter"
       :title="'filter-by-genre'"
       :options="genreOptions"
-      :event="EVENT__GENRE_SELECTION_CHANGED"
-      @genreSelectionChanged="handleGenreSelectionChange"
+      @selectionChanged="handleGenreSelectionChange"
     ></OptionFilterCard>
   </Card>
 

@@ -1,16 +1,13 @@
 <script setup>
 import { watch, ref } from "vue";
+import { EVENT__SELECTION_CHANGED } from "../commons";
 
-const { title, options, event } = defineProps([
-  "title",
-  "options",
-  "event",
-]);
+const { title, options } = defineProps(["title", "options"]);
 
-const emit = defineEmits([event]);
+const emit = defineEmits([EVENT__SELECTION_CHANGED]);
 
 const selected = ref([]);
-watch(selected, () => emit(event, selected.value));
+watch(selected, () => emit(EVENT__SELECTION_CHANGED, selected.value));
 </script>
 
 <template>
